@@ -57,11 +57,14 @@
         android:layout_centerInParent="true" />
 
     <TextView
-        android:id="@+id/guessWord"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:letterSpacing="10"
-        android:textColor="@color/white"
-        android:textSize="40dp" />
+        android:letterSpacing="1"
+        android:textColor="@color/black"
+        android:textSize="30dp"
+        android:text="Test"
+        android:textAlignment="center"
+        android:id="@+id/guessWord"
+        />
 </RelativeLayout>
