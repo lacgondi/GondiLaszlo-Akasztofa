@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Variables
     private final String[] letterList = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
-    private List<String> usedLetterList;
+    private List<String> usedLetterList = new ArrayList<>();
     private int index;
     private String[] wordList = {"fire", "police", "iphone", "keyboard", "house", "monitor", "clock", "nagger", "dragon", "racing"};
     private String word;
@@ -139,9 +139,6 @@ public class MainActivity extends AppCompatActivity {
                             break;
                     }
                 }
-                if(usedLetterList.contains(currentLetter)){
-                    guessLetter.setTextColor(Color.BLACK);
-                }
                 if(word.equals(guessOutput)){
                     builderWin.create().show();
                 }
@@ -206,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
         index = 0;
         guessLetter.setText(letterList[index].toUpperCase());
         guessWord.setText(thinkOfWord(wordList));
-        usedLetterList = new ArrayList<>();
+        usedLetterList.clear();
         mistakes = 0;
         hangmanImage.setImageResource(R.drawable.akasztofa00);
     }
