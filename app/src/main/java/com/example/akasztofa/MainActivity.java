@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private String[] wordList = {"fire", "police", "iphone", "keyboard", "house", "monitor", "clock", "nagger", "dragon", "racing"};
     private String word;
     private int mistakes;
+    private String guessOutput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,18 +62,18 @@ public class MainActivity extends AppCompatActivity {
         guessButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String output = "";
+                guessOutput = (String) guessWord.getText();
+                StringBuilder sb = new StringBuilder(guessOutput);
                 CharSequence currentLetter = guessLetter.getText();
                 Log.i("currentL", (String) currentLetter);
                 if (word.contains(currentLetter)){
                     for (int i = 0; i < word.length(); i++) {
                         if(word.charAt(i)==currentLetter.charAt(0)){
-                            output+=currentLetter;
-                        }else{
-                            output+="_";
+                            char a = currentLetter.charAt(0);
+                            sb.setCharAt(i,a);
                         }
                     }
-                    guessWord.setText(output);
+                    guessWord.setText(sb);
                 }else{
                     mistakes++;
                     switch (mistakes) {
@@ -122,14 +123,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String thinkOfWord(String[] list) {
-        String underlines = "";
+        guessOutput = "";
         Random rng = new Random();
         word = list[rng.nextInt(9)].toUpperCase();
         for (int i = 0; i < word.length(); i++) {
-            underlines += "_";
+            guessOutput += "_";
         }
         Log.i("Chosen word", word);
-        return underlines;
+        return guessOutput;
     }
 
     private void init() {
