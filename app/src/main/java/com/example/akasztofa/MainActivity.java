@@ -2,6 +2,7 @@ package com.example.akasztofa;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Variables
     private final String[] letterList = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
-    private String[] usedLetterList = new String[26];
+    private List<String> usedLetterList = new ArrayList<>();
     private int index;
     private String[] wordList = {"fire", "police", "iphone", "keyboard", "house", "monitor", "clock", "nagger", "dragon", "racing"};
     private String word;
@@ -46,6 +49,11 @@ public class MainActivity extends AppCompatActivity {
                     index--;
                 }
                 guessLetter.setText(letterList[index].toUpperCase());
+                if(!usedLetterList.contains(letterList[index])){
+                    guessLetter.setTextColor(Color.RED);
+                }else{
+                    guessLetter.setTextColor(Color.BLACK);
+                }
             }
         });
         plusButton.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +64,9 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     index++;
                 }
+                if(usedLetterList.contains(letterList[index])){
+                    guessLetter.setTextColor(Color.BLACK);
+                }
                 guessLetter.setText(letterList[index].toUpperCase());
             }
         });
@@ -65,12 +76,13 @@ public class MainActivity extends AppCompatActivity {
                 guessOutput = (String) guessWord.getText();
                 StringBuilder sb = new StringBuilder(guessOutput);
                 CharSequence currentLetter = guessLetter.getText();
+                usedLetterList.add((String) currentLetter);
                 Log.i("currentL", (String) currentLetter);
                 if (word.contains(currentLetter)){
                     for (int i = 0; i < word.length(); i++) {
                         if(word.charAt(i)==currentLetter.charAt(0)){
                             char a = currentLetter.charAt(0);
-                            sb.setCharAt(i,a);
+                            sb.setCharAt(i, a);
                         }
                     }
                     guessWord.setText(sb);
@@ -117,6 +129,9 @@ public class MainActivity extends AppCompatActivity {
                             hangmanImage.setImageResource(R.drawable.akasztofa13);
                             break;
                     }
+                }
+                if(usedLetterList.contains(currentLetter)){
+                    guessLetter.setTextColor(Color.BLACK);
                 }
             }
         });
