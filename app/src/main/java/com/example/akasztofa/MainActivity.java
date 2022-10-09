@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Variables
     private final String[] letterList = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
-    private List<String> usedLetterList = new ArrayList<>();
+    private List<String> usedLetterList;
     private int index;
     private String[] wordList = {"fire", "police", "iphone", "keyboard", "house", "monitor", "clock", "nagger", "dragon", "racing"};
     private String word;
@@ -84,16 +84,15 @@ public class MainActivity extends AppCompatActivity {
                 CharSequence currentLetter = guessLetter.getText();
                 usedLetterList.add(String.valueOf(currentLetter).toUpperCase());
 
+
                 if (word.contains(currentLetter)){
                     for (int i = 0; i < word.length(); i++) {
                         if(word.charAt(i)==currentLetter.charAt(0)){
                             char a = currentLetter.charAt(0);
                             sb.setCharAt(i, a);
                         }
-                    }
-                    guessWord.setText(sb);
-                    if(word.equals(guessOutput)){
-                        builderWin.create().show();
+                        guessOutput= sb.toString();
+                        guessWord.setText(sb);
                     }
                 }else{
                     mistakes++;
@@ -142,6 +141,9 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if(usedLetterList.contains(currentLetter)){
                     guessLetter.setTextColor(Color.BLACK);
+                }
+                if(word.equals(guessOutput)){
+                    builderWin.create().show();
                 }
             }
         });
@@ -204,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
         index = 0;
         guessLetter.setText(letterList[index].toUpperCase());
         guessWord.setText(thinkOfWord(wordList));
+        usedLetterList = new ArrayList<>();
         mistakes = 0;
         hangmanImage.setImageResource(R.drawable.akasztofa00);
     }
