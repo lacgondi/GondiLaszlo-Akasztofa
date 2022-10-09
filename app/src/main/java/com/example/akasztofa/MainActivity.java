@@ -1,9 +1,10 @@
 package com.example.akasztofa;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,7 +12,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -25,6 +25,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView guessLetter;
     private TextView guessWord;
     private ImageView hangmanImage;
+
+    private AlertDialog.Builder builderLose;
+    private AlertDialog.Builder builderWin;
 
     //Variables
     private final String[] letterList = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
@@ -78,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 CharSequence currentLetter = guessLetter.getText();
                 usedLetterList.add((String) currentLetter);
                 Log.i("currentL", (String) currentLetter);
+
                 if (word.contains(currentLetter)){
                     for (int i = 0; i < word.length(); i++) {
                         if(word.charAt(i)==currentLetter.charAt(0)){
@@ -127,11 +131,15 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case 13:
                             hangmanImage.setImageResource(R.drawable.akasztofa13);
+                            builderLose.create().show();
                             break;
                     }
                 }
                 if(usedLetterList.contains(currentLetter)){
                     guessLetter.setTextColor(Color.BLACK);
+                }
+                if(word.equals(guessOutput)){
+                    builderWin.create().show();
                 }
             }
         });
@@ -156,9 +164,45 @@ public class MainActivity extends AppCompatActivity {
         guessWord = findViewById(R.id.guessWord);
         hangmanImage = findViewById(R.id.hangmanImage);
 
+        //Alert Dialogs
+        builderLose = new AlertDialog.Builder(MainActivity.this);
+        builderLose.setTitle("Vesztettél");
+        builderLose.setMessage("Szeretnél új játékot kezdeni?");
+        builderLose.setNegativeButton("Nem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
+        builderLose.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                init();
+            }
+        });
+        builderLose.setCancelable(false);
+
+        builderWin = new AlertDialog.Builder(MainActivity.this);
+        builderWin.setTitle("Nyertél!");
+        builderWin.setMessage("Szeretnél új játékot kezdeni?");
+        builderWin.setNegativeButton("Nem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
+        builderWin.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                init();
+            }
+        });
+        builderWin.setCancelable(false);
+
         index = 0;
         guessLetter.setText(letterList[index].toUpperCase());
         guessWord.setText(thinkOfWord(wordList));
         mistakes = 0;
+        hangmanImage.setImageResource(R.drawable.akasztofa00);
     }
 }
