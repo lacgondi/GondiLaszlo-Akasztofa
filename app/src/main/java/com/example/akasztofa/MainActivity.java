@@ -52,11 +52,12 @@ public class MainActivity extends AppCompatActivity {
                     index--;
                 }
                 guessLetter.setText(letterList[index].toUpperCase());
-                if(!usedLetterList.contains(letterList[index])){
-                    guessLetter.setTextColor(Color.RED);
-                }else{
+                if(usedLetterList.contains(guessLetter.getText())){
                     guessLetter.setTextColor(Color.BLACK);
+                }else{
+                    guessLetter.setTextColor(Color.RED);
                 }
+
             }
         });
         plusButton.setOnClickListener(new View.OnClickListener() {
@@ -67,10 +68,12 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     index++;
                 }
-                if(usedLetterList.contains(letterList[index])){
-                    guessLetter.setTextColor(Color.BLACK);
-                }
                 guessLetter.setText(letterList[index].toUpperCase());
+                if(usedLetterList.contains(guessLetter.getText())){
+                    guessLetter.setTextColor(Color.BLACK);
+                }else{
+                    guessLetter.setTextColor(Color.RED);
+                }
             }
         });
         guessButton.setOnClickListener(new View.OnClickListener() {
@@ -79,8 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 guessOutput = (String) guessWord.getText();
                 StringBuilder sb = new StringBuilder(guessOutput);
                 CharSequence currentLetter = guessLetter.getText();
-                usedLetterList.add((String) currentLetter);
-                Log.i("currentL", (String) currentLetter);
+                usedLetterList.add(String.valueOf(currentLetter).toUpperCase());
 
                 if (word.contains(currentLetter)){
                     for (int i = 0; i < word.length(); i++) {
@@ -90,6 +92,9 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                     guessWord.setText(sb);
+                    if(word.equals(guessOutput)){
+                        builderWin.create().show();
+                    }
                 }else{
                     mistakes++;
                     switch (mistakes) {
@@ -137,9 +142,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if(usedLetterList.contains(currentLetter)){
                     guessLetter.setTextColor(Color.BLACK);
-                }
-                if(word.equals(guessOutput)){
-                    builderWin.create().show();
                 }
             }
         });
